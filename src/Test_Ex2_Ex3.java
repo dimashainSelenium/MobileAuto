@@ -15,8 +15,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.List;
 
-public class FirstTestEx2 {
+public class Test_Ex2_Ex3 {
     private AppiumDriver driver;
 
     @Before
@@ -28,7 +29,7 @@ public class FirstTestEx2 {
         capabilities.setCapability("appium:automationName", "Appium");
         capabilities.setCapability("appium:appPackage", "org.wikipedia.alpha");
         capabilities.setCapability("appium:appActivity", "org.wikipedia.DefaultIcon");
-        capabilities.setCapability("appium:app", "/Users/ruasido/Developer/MobileAuto/apks/app-alpha-universal-release.apk");
+        capabilities.setCapability("appium:app", "C:/IdeaProjects/MobileAuto/apks/app-alpha-universal-release.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:9999/wd/hub"),capabilities);
     }
@@ -37,11 +38,19 @@ public class FirstTestEx2 {
         driver.quit();
     }
     @Test
-    public void firstTestEx2(){
-        waitForElementAndClick(By.id("org.wikipedia.alpha:id/fragment_onboarding_skip_button"),"1",5);
-        //waitForElementAndClick(By.id("org.wikipedia.alpha:id/search_container"),"Java",5);
-        waitForElementAndSendKeys(By.id("org.wikipedia.alpha:id/search_container"),"Java","2",15);
-        assertElementHasText(By.id("org.wikipedia.alpha:id/search_container"),"Java");
+    public void TestEx2(){
+        waitForElementAndClick(By.id("org.wikipedia.alpha:id/fragment_onboarding_skip_button"),"Some error with skip button",5);
+        waitForElementAndClick(By.id("org.wikipedia.alpha:id/search_container"),"Search container does not found!",15);
+        assertElementHasText(By.id("org.wikipedia.alpha:id/search_src_text"),"Search Wikipedia");
+    }
+    @Test
+    public void TestEx3(){
+        waitForElementAndClick(By.id("org.wikipedia.alpha:id/fragment_onboarding_skip_button"),"Some error with skip button",5);
+        waitForElementAndClick(By.id("org.wikipedia.alpha:id/search_container"),"Search container does not found!",15);
+        waitForElementAndSendKeys(By.id("org.wikipedia.alpha:id/search_src_text"),"Java","Keys does not sent",15);
+        assertCountElement(waitForElementsPresent(By.id("org.wikipedia.alpha:id/page_list_item_title"),"Do not found enaff elements",15),1);
+        waitForElementAndClick(By.id("org.wikipedia.alpha:id/search_close_btn"),"Close button does not found!",15);
+        waitForElementNotPresent("org.wikipedia.alpha:id/search_close_btn","Result still on screen!",15);
     }
 
     public WebElement waitForElementPresent(By by, String error_message, long timeOutInSec) {
@@ -50,7 +59,6 @@ public class FirstTestEx2 {
         WebElement element = wait.until(
                 ExpectedConditions.presenceOfElementLocated(by)
         );
-        element.click();
         return element;
     }
 
@@ -79,8 +87,21 @@ public class FirstTestEx2 {
         );
     }
 
+    public List<WebElement> waitForElementsPresent(By by, String error_message, long timeOutInSec){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOutInSec));
+        wait.withMessage(error_message + "\n");
+        List<WebElement> elements = wait.until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(by)
+        );
+        return elements;
+    }
+
     public void assertElementHasText(By by, String text){
-        Assert.assertEquals(text,waitForElementPresent(by,"3").getText());
+        Assert.assertEquals(text,waitForElementPresent(by,text + " is not present").getText());
+    }
+
+    public void assertCountElement(List<WebElement> elements, int count){
+        Assert.assertTrue("Is not provide " + count + " elements",elements.size()>=count);
     }
 
 }
