@@ -52,7 +52,7 @@ public class Test_Ex5_Ex6 {
         waitForElementAndClick(By.id("org.wikipedia.alpha:id/search_container"),"Search container does not found!",15);
         waitForElementAndSendKeys(By.id("org.wikipedia.alpha:id/search_src_text"),"Java","Keys does not sent",15);
         for (int i=0;i<countOfArt;i++){
-            attributeName[i] = waitForElementsPresent(By.id("org.wikipedia.alpha:id/page_list_item_description"),"",15).get(i).getText();
+            attributeName[i] = waitForElementsPresent(By.id("org.wikipedia.alpha:id/page_list_item_description"),"Name does not found",15).get(i).getText();
         }
         for (int i=0;i<countOfArt;i++){
             waitForElementAndClick(By.xpath("//*[contains(@text,'"+attributeName[i]+"')]"),"Some error with click art",5);
@@ -73,6 +73,22 @@ public class Test_Ex5_Ex6 {
         waitForElementsPresent(By.xpath("//*[contains(@text,'"+attributeName[countOfArt-1]+"')]"),"Art not same",5);
     }
 
+    @Test
+    public void TestEx6(){
+        int countOfArt = 1;
+        String attributeName[] = new String[countOfArt];
+
+        waitForElementAndClick(By.id("org.wikipedia.alpha:id/fragment_onboarding_skip_button"),"Some error with skip button",5);
+        waitForElementAndClick(By.id("org.wikipedia.alpha:id/search_container"),"Search container does not found!",15);
+        waitForElementAndSendKeys(By.id("org.wikipedia.alpha:id/search_src_text"),"Java","Keys does not sent",15);
+        attributeName[0] = waitForElementsPresent(By.id("org.wikipedia.alpha:id/page_list_item_description"),"Name does not found",15).get(0).getText();
+        By titleLocator = By.xpath("//android.webkit.WebView//android.widget.TextView[@text='Java']");
+        assertElementPresent(
+                titleLocator,
+                "Article title is not present"
+            );
+    }
+
     public void swipeElementToLeft(By by, String errorMessage) {
         WebElement element = waitForElementPresent(by, errorMessage, 15);
 
@@ -91,6 +107,13 @@ public class Test_Ex5_Ex6 {
                 .moveTo(PointOption.point(endX, middleY))
                 .release()
                 .perform();
+    }
+
+    public void assertElementPresent(By by, String errorMessage) {
+        List<WebElement> elements = driver.findElements(by);
+        if (elements.isEmpty()) {
+            Assert.fail(errorMessage);
+        }
     }
 
     public WebElement waitForElementPresent(By by, String error_message, long timeOutInSec) {
