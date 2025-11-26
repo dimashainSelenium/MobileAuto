@@ -19,9 +19,7 @@ public class ArticlePageObject extends MainPageObject{
         super(driver);
     }
 
-    private String[] articleTitle;
     private String[] articleSubText = new String[100];;
-    private int size;
     List<WebElement> webElements;
 
     public void saveArticleText(SearchPageObject searchPageObject, int count){
