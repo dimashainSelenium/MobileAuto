@@ -1,16 +1,22 @@
-package src;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import lib.*;
 import org.junit.Test;
+import io.qameta.allure.junit4.DisplayName;
 import org.openqa.selenium.By;
+
+import java.net.MalformedURLException;
 
 public class Test_Ex8 extends CoreTestCase {
 
-    protected void setUp() throws Exception{
+    public void setUp() throws MalformedURLException {
         super.setUp();
     }
 
     @Test
+    @DisplayName("Check searchline")
+    @Description("Search defualt string in searchline")
     public void testEx2(){
         SearchPageObject searchPageObject = new SearchPageObject(driver);
 
@@ -19,6 +25,8 @@ public class Test_Ex8 extends CoreTestCase {
         searchPageObject.checkSearchLine("Search Wikipedia");
     }
     @Test
+    @DisplayName("Check search clear")
+    @Description("Open search and check after clear")
     public void testEx3(){
         SearchPageObject searchPageObject = new SearchPageObject(driver);
 
@@ -29,9 +37,12 @@ public class Test_Ex8 extends CoreTestCase {
         searchPageObject.waitForSearchResult();
         searchPageObject.pressClearButton();
         searchPageObject.checkClearButtonIsDissapear();
+        //searchPageObject.takeScreenshot("Article");
     }
 
     @Test
+    @DisplayName("Delete favorite article")
+    @Description("Add some favorite articles and delete except one")
     public void testEx5(){
         int countOfArt = 2;
         SearchPageObject searchPageObject = new SearchPageObject(driver);
@@ -64,6 +75,8 @@ public class Test_Ex8 extends CoreTestCase {
  }
 
     @Test
+    @DisplayName("Check article title")
+    @Description("Check tha title was present on page after open")
     public void testEx6(){
         int countOfArt = 1;
 

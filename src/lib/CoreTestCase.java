@@ -2,18 +2,24 @@ package lib;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 
-public class CoreTestCase extends TestCase {
+public class CoreTestCase {
     protected AppiumDriver driver;
     private static String AppiumURL = "http://127.0.0.1:9999/wd/hub";
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    @Step("Run driver and session")
+    public void setUp() throws MalformedURLException {
 
-        super.setUp();
+        //super.setUp();
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
@@ -27,10 +33,11 @@ public class CoreTestCase extends TestCase {
 
         driver = new AndroidDriver(new URL(AppiumURL),capabilities);
     }
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    @Step("Stop driver and session")
+    public void tearDown() {
 
         driver.quit();
-        super.tearDown();
+        //super.tearDown();
     }
 }
